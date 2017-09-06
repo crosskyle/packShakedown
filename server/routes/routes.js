@@ -8,7 +8,8 @@ module.exports = (app) => {
 
   app.post('/api/users', UsersController.create_user)
 
-  //app.post('api/users/:id/packs', UsersController.create_pack)
+  app.post('/api/users/:userId/packs', UsersController.create_pack)
 
-  //app.delete('/api/users/:id', UsersController.delete_user)
+  app.post('/api/users/:userId/packs/:packId/items', UsersController.create_item)
+
 }
