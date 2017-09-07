@@ -3,7 +3,7 @@ const PackSchema = require('./subdocuments/pack')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -19,7 +19,7 @@ const userSchema = new Schema({
 
 // On Save Hook, encrypt password
 // Before saving a model, run this function
-userSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
   // Get access to the user model
   const user = this
 
@@ -38,7 +38,7 @@ userSchema.pre('save', function (next) {
   })
 })
 
-userSchema.methods.comparePassword = function (candidatePassword, callback) {
+UserSchema.methods.comparePassword = function (candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
     if (err) { return callback(err) }
 
@@ -47,6 +47,6 @@ userSchema.methods.comparePassword = function (candidatePassword, callback) {
 }
 
 
-const User = mongoose.model('user', userSchema)
+const User = mongoose.model('user', UserSchema)
 
 module.exports = User

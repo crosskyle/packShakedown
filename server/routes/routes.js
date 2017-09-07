@@ -1,5 +1,5 @@
 const UsersController = require('../controllers/users_controller')
-const Authentication = require('../controllers/authentication')
+const AuthController = require('../controllers/auth_controller')
 const passportService = require('../services/passport')
 const passport = require('passport')
 
@@ -10,13 +10,11 @@ module.exports = (app) => {
 
   // Authentication
 
-  app.post('/api/signin', requireSignin, Authentication.signin)
+  app.post('/api/signin', requireSignin, AuthController.signin)
 
-  app.post('/api/signup', Authentication.signup)
+  app.post('/api/signup', AuthController.signup)
 
   // Create
-
-  app.post('/api/users', UsersController.create_user)
 
   app.post('/api/users/:userId/packs', UsersController.create_pack)
 
