@@ -1,7 +1,3 @@
-/**
- * Created by kylecross on 7/10/17.
- */
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')

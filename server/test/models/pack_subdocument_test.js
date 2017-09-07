@@ -1,6 +1,6 @@
 
 const assert = require('assert')
-const User = require('../models/user')
+const User = require('../../models/user')
 
 describe('Subdocuments', () => {
   it('can create subdocuments', (done) => {

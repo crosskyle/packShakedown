@@ -1,7 +1,3 @@
-/**
- * Created by kylecross on 7/11/17.
- */
-
 const mongoose = require('mongoose')
 
 mongoose.Promise = global.Promise
