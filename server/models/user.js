@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const PackSchema = require('./subdocuments/pack')
+const ItemSchema = require ('./subdocuments/item')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 
@@ -14,6 +15,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  gear: [ItemSchema],
   packs: [PackSchema]
 })
 

@@ -5,19 +5,6 @@ const mongoose = require('mongoose')
 const User = mongoose.model('user')
 
 describe('Users controller', () => {
-  it('Post to /api/users creates a new user', (done) => {
-    User.count().then(count => {
-      request(app)
-        .post('/api/users')
-        .send({ email: 'test@test.com', password: 'password' })
-        .end((err, response) => {
-          User.count().then(newCount => {
-            assert(count + 1 === newCount)
-            done()
-          })
-        })
-    })
-  })
 
   it('Post to /api/users/:userId/packs creates a new pack', (done) => {
     const user = new User({ email: 'test@test.com', password: 'password', packs: [] })
@@ -36,24 +23,17 @@ describe('Users controller', () => {
     })
   })
 
-  it('Post to /api/users/:userId/packs/:packId/items creates a new item', (done) => {
-    const user = new User({
-      email: 'test@test.com',
-      password: 'password',
-      packs: [{
-        title: 'pack',
-        items: []
-      }]
-    })
+  it('Post to /api/users/:userId/gear creates a new item', (done) => {
+    const user = new User({ email: 'test@test.com', password: 'password' })
 
     user.save().then(() => {
       request(app)
-        .post(`/api/users/${user._id}/packs/${user.packs[0]._id}/items`)
-        .send({ title: 'item', description: 'desc' })
+        .post(`/api/users/${user._id}/gear`)
+        .send({ title: 'item' })
         .end((err, response) => {
           User.findOne({ email: 'test@test.com' })
             .then(user => {
-              assert(user.packs[0].items.length === 1)
+              assert(user.gear.length === 1)
               done()
             })
         })
@@ -79,8 +59,11 @@ describe('Users controller', () => {
       email: 'test@test.com',
       password: 'password',
       packs: [{
-        title: 'pack'
-      }]
+        title: 'pack',
+        description: 'desc',
+        itemIds: ['string', 'string']
+      }],
+      gear: [{ title: 'soap'}, {title: 'quilt'}, {title: 'tarp'}]
     })
 
     user.save().then(() => {
@@ -94,23 +77,21 @@ describe('Users controller', () => {
     })
   })
 
-  it('GET to /api/users/:userId/packs/:packId/items/:itemId reads an item', (done) => {
+  it('GET to /api/users/:userId/gear reads gear list', (done) => {
     const user = new User({
       email: 'test@test.com',
       password: 'password',
-      packs: [{
-        items: [{
-          title: 'toothbrush'
-        }]
+      gear: [{
+        title: 'item'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .get(`/api/users/${user._id}/packs/${user.packs[0]._id}/items/${user.packs[0].items[0]._id}`)
+        .get(`/api/users/${user._id}/gear`)
         .send()
         .end((err, response) => {
-          assert(response.body.title === 'toothbrush')
+          assert(response.body[0].title === 'item')
           done()
         })
     })
@@ -136,23 +117,21 @@ describe('Users controller', () => {
     })
   })
 
-  it('PUT to /api/users/:userId/packs/:packId/items/:itemId updates an item', (done) => {
+  it('PUT to /api/users/:userId/gear/:itemId updates an item', (done) => {
     const user = new User({
       email: 'test@test.com',
       password: 'password',
-      packs: [{
-        items: {
-          title: 'toothbrush'
-        }
+      gear: [{
+        title: 'title'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .put(`/api/users/${user._id}/packs/${user.packs[0]._id}/items/${user.packs[0].items[0]._id}`)
-        .send({ title: 'flashlight'})
+        .put(`/api/users/${user._id}/gear/${user.gear[0]._id}`)
+        .send({ title: 'soap'})
         .end((err, response) => {
-          assert(response.body.title === 'flashlight')
+          assert(response.body.title === 'soap')
           done()
         })
     })
@@ -198,32 +177,26 @@ describe('Users controller', () => {
     })
   })
 
-  it('DELETE to /api/users/:userId/packs/:packsId/items removes an item', (done) => {
+  it('DELETE to /api/users/:userId/gear/:itemId removes an item', (done) => {
     const user = new User({
       email: 'test@t.com',
       password: 'password',
-      packs: [{
-        title: 'simple',
-        items:[{
-          title: 'toothbrush'
-        }]
+      gear: [{
+        title: 'toothbrush'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .delete(`/api/users/${user._id}/packs/${user.packs[0]._id}/items/${user.packs[0].items[0]._id}`)
+        .delete(`/api/users/${user._id}/gear/${user.gear[0]._id}`)
         .send()
         .end(() => {
           User.findOne({ email: 'test@t.com' })
             .then(user => {
-              assert(user.packs[0].items.length === 0)
+              assert(user.gear.length === 0)
               done()
             })
         })
     })
   })
-
-
 })
-//

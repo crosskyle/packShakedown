@@ -3,7 +3,7 @@ const AuthController = require('../controllers/auth_controller')
 const passportService = require('../services/passport')
 const passport = require('passport')
 
-const requireAuth = passport.authenticate('jwt', { session: false })
+const requireAuth = passport.authenticate('jwt', { session: false }) // for protecting routes
 const requireSignin = passport.authenticate('local', { session: false })
 
 module.exports = (app) => {
@@ -18,7 +18,7 @@ module.exports = (app) => {
 
   app.post('/api/users/:userId/packs', UsersController.create_pack)
 
-  app.post('/api/users/:userId/packs/:packId/items', UsersController.create_item)
+  app.post('/api/users/:userId/gear', UsersController.create_gear_item)
 
   // Read
 
@@ -26,13 +26,14 @@ module.exports = (app) => {
 
   app.get('/api/users/:userId/packs/:packId', UsersController.read_pack)
 
-  app.get('/api/users/:userId/packs/:packId/items/:itemId', UsersController.read_item)
+  app.get('/api/users/:userId/gear', UsersController.read_gear)
+
 
   // Update
 
   app.put('/api/users/:userId/packs/:packId', UsersController.update_pack)
 
-  app.put('/api/users/:userId/packs/:packId/items/:itemId', UsersController.update_item)
+  app.put('/api/users/:userId/gear/:itemId', UsersController.update_gear_item)
 
   // Delete
 
@@ -40,5 +41,5 @@ module.exports = (app) => {
 
   app.delete('/api/users/:userId/packs/:packId', UsersController.delete_pack)
 
-  app.delete('/api/users/:userId/packs/:packId/items/:itemId', UsersController.delete_item)
+  app.delete('/api/users/:userId/gear/:itemId', UsersController.delete_gear_item)
 }

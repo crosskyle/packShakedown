@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const PackSchema = new Schema({
   title: String,
   description: String,
-  items: [ItemSchema]
+  itemIds: [String]
 })
 
 module.exports = PackSchema
