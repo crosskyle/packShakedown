@@ -22,7 +22,11 @@ export function createPack(values) {
 
 export function readPack(packId) {
   const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}/packs/${packId}`)
-    .then((resp) => resp.data)
+    .then((resp) => {
+      console.log(resp.data.items)
+
+      return resp.data
+    })
 
   return {
     type: READ_PACK,

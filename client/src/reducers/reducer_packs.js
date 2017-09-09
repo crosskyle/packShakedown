@@ -14,7 +14,6 @@ export default function(state = {}, action) {
     case READ_PACKS:
       return action.payload
     case READ_PACK:
-      console.log(action.payload)
       return {...state, [action.payload._id]: action.payload }
     default:
       return state
