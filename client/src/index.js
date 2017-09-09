@@ -5,22 +5,21 @@ import { createStore, applyMiddleware } from 'redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import promise from 'redux-promise'
 
-import reducers from './reducers/index';
-import PostsIndex from './components/posts_index'
-import PostsNew from './components/posts_new'
-import PostsShow from './components/posts_show'
+import reducers from './reducers/index'
+import PacksNew from './components/packs_new'
+import PacksShow from './components/packs_show'
+import PacksIndex from './components/packs_index'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
-
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
         <Switch>
-          <Route path="/posts/new" component={PostsNew}/>
-          <Route path="/posts/:id" component={PostsShow}/>
-          <Route path="/" component={PostsIndex}/>
+          <Route path="/packs/new" component={PacksNew}/>
+          <Route path="/packs/:id" component={PacksShow}/>
+          <Route path="/" component={PacksIndex} />
         </Switch>
       </div>
     </BrowserRouter>

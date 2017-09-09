@@ -6,7 +6,9 @@ const ItemSchema = new Schema({
   title: String,
   description: String,
   weight: Number,
-  quantity: Number
+  quantity: Number,
+  worn: Boolean,
+  consumable: Boolean
 })
 
 module.exports = ItemSchema

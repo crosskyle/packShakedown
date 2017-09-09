@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { createPost } from '../actions/index'
+import { createPack } from '../actions/index'
 
-class PostsNew extends Component {
+class PacksNew extends Component {
   renderField(field) {
     const { meta: {touched, error }} = field
     const className =  `form-group ${touched && error ? 'has-danger' : ''}`
@@ -26,7 +26,7 @@ class PostsNew extends Component {
 
 
   onSubmit(values) {
-    this.props.createPost(values, () => {
+    this.props.createPack(values, () => {
       this.props.history.push('/')
     })
   }
@@ -43,13 +43,8 @@ class PostsNew extends Component {
           component={this.renderField}
         />
         <Field
-          label="Categories"
-          name="categories"
-          component={this.renderField}
-        />
-        <Field
-          label="Post Content"
-          name="content"
+          label="Description"
+          name="description"
           component={this.renderField}
         />
         <button type="submit" className="btn btn-primary">Submit</button>
@@ -67,11 +62,8 @@ function validate(values) {
   if (!values.title) {
     errors.title = 'Please enter a title'
   }
-  if (!values.categories) {
-    errors.categories = 'Please enter som categories'
-  }
-  if (!values.content) {
-    errors.content = 'Please enter some content'
+  if (!values.description) {
+    errors.description = 'Please enter a description'
   }
 
   //If errors is empty, the form passed validation
@@ -81,5 +73,5 @@ function validate(values) {
 
 export default reduxForm({
   validate: validate,
-  form: 'PostsNewForm'
-})(connect(null,{ createPost })(PostsNew))
+  form: 'PacksNewForm'
+})(connect(null,{ createPack })(PacksNew))

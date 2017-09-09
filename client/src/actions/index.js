@@ -1,51 +1,41 @@
 import axios from 'axios'
 
-export const FETCH_POSTS = 'fetch_posts'
-export const FETCH_POST = 'fetch_post'
-export const DELETE_POST = 'delete_post'
-export const CREATE_POST = 'create_post'
+import {
+  CREATE_PACK,
+  READ_PACK,
+  READ_PACKS
+} from './types'
 
-const ROOT_URL = 'http://reduxblog.herokuapp.com/api'
-const API_KEY = '?key=walleyebones210'
+const ROOT_URL = 'http://localhost:3050'
+
+const USER_ID = '59b2fb62bd394f28d80ebb4a'
 
 
-export function fetchPosts() {
-  const request = axios.get(`${ROOT_URL}/posts${API_KEY}`)
+export function createPack(values) {
+  const response = axios.post(`${ROOT_URL}/api/users/${USER_ID}/packs`, values)
 
   return {
-    type: FETCH_POSTS,
-    payload: request
+    type: CREATE_PACK,
+    payload: response
   }
 }
 
-
-export function createPost(values, callback) {
-  const request = axios.post(`${ROOT_URL}/posts${API_KEY}`, values)
-    .then(() => callback())
+export function readPack(packId) {
+  const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}/packs/${packId}`)
+    .then((resp) => resp.data)
 
   return {
-    type: CREATE_POST,
-    payload: request
+    type: READ_PACK,
+    payload: response
   }
 }
 
-
-export function fetchPost(id) {
-  const request = axios.get(`${ROOT_URL}/posts/${id}${API_KEY}`)
-
-  return {
-    type: FETCH_POST,
-    payload: request
-  }
-}
-
-
-export function deletePost(id, callback) {
-  const request = axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`)
-    .then(() => callback())
+export function readPacks() {
+  const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}`)
+    .then((resp) => resp.data.packs)
 
   return {
-    type: DELETE_POST,
-    payload: id
+    type: READ_PACKS,
+    payload: response
   }
 }

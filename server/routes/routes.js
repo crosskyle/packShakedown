@@ -18,7 +18,7 @@ module.exports = (app) => {
 
   app.post('/api/users/:userId/packs', UsersController.create_pack)
 
-  app.post('/api/users/:userId/gear', UsersController.create_gear_item)
+  app.post('/api/users/:userId/items', UsersController.create_item)
 
   // Read
 
@@ -26,14 +26,16 @@ module.exports = (app) => {
 
   app.get('/api/users/:userId/packs/:packId', UsersController.read_pack)
 
-  app.get('/api/users/:userId/gear', UsersController.read_gear)
+  app.get('/api/users/:userId/items', UsersController.read_items)
 
 
   // Update
 
   app.put('/api/users/:userId/packs/:packId', UsersController.update_pack)
 
-  app.put('/api/users/:userId/gear/:itemId', UsersController.update_gear_item)
+  app.put('/api/users/:userId/packs/:packId/items', UsersController.update_pack_items)
+
+  app.put('/api/users/:userId/items/:itemId', UsersController.update_item)
 
   // Delete
 
@@ -41,5 +43,5 @@ module.exports = (app) => {
 
   app.delete('/api/users/:userId/packs/:packId', UsersController.delete_pack)
 
-  app.delete('/api/users/:userId/gear/:itemId', UsersController.delete_gear_item)
+  app.delete('/api/users/:userId/items/:itemId', UsersController.delete_item)
 }

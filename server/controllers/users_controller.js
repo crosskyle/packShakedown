@@ -15,10 +15,10 @@ module.exports = {
   },
 
 
-  create_gear_item(req, res, next) {
+  create_item(req, res, next) {
     User.findById({ _id: req.params.userId })
       .then((user) => {
-        user.gear.push(req.body)
+        user.items.push(req.body)
         return user.save() // must return to include another callback after promise
       })
       .then(user => res.send(user))
@@ -39,7 +39,7 @@ module.exports = {
     User.findById({ _id: req.params.userId })
       .then(user => {
         const packItemIds = user.packs.id(req.params.packId).itemIds
-        const allItems = user.gear
+        const allItems = user.items
 
         let packItems = []
         let map = new Map()
@@ -53,6 +53,7 @@ module.exports = {
 
         res.send({
           "title": user.packs.id(req.params.packId).title,
+          "description": user.packs.id(req.params.packId).description,
           "_id": user.packs.id(req.params.packId)._id,
           "items": packItems
         })
@@ -61,25 +62,14 @@ module.exports = {
   },
 
 
-  read_gear(req, res, next) {
+  read_items(req, res, next) {
     User.findById({ _id: req.params.userId })
-      .then(user => res.send(user.gear))
+      .then(user => res.send(user.items))
       .catch(next)
   },
 
 
   //Update
-
-  update_pack_item(req, res, next) {
-    User.findByIdAndUpdate({ _id: req.params.userId })
-      .then((user) => {
-        const itemId = req.body.itemId
-        user.packs.id(req.params.packId).itemIds.push(itemId)
-        return user.save()
-      })
-      .then(user => res.send(user.packs.id(req.params.packId)))
-      .catch(next)
-  },
 
   update_pack(req, res, next) {
     User.findByIdAndUpdate({ _id: req.params.userId })
@@ -92,13 +82,25 @@ module.exports = {
   },
 
 
-  update_gear_item(req, res, next) {
+  update_pack_items(req, res, next) {
     User.findByIdAndUpdate({ _id: req.params.userId })
       .then((user) => {
-        user.gear.id(req.params.itemId).set(req.body)
+        const itemId = req.body.itemId
+        user.packs.id(req.params.packId).itemIds.push(itemId)
         return user.save()
       })
-      .then(user => res.send(user.gear.id(req.params.itemId)))
+      .then(user => res.send(user.packs.id(req.params.packId)))
+      .catch(next)
+  },
+
+
+  update_item(req, res, next) {
+    User.findByIdAndUpdate({ _id: req.params.userId })
+      .then((user) => {
+        user.items.id(req.params.itemId).set(req.body)
+        return user.save()
+      })
+      .then(user => res.send(user.items.id(req.params.itemId)))
       .catch(next)
   },
 
@@ -123,10 +125,14 @@ module.exports = {
   },
 
 
-  delete_gear_item(req, res, next) {
+  delete_item(req, res, next) {
     User.findById({ _id: req.params.userId })
       .then((user) => {
-        user.gear.id(req.params.itemId).remove()
+        user.items.id(req.params.itemId).remove()
+
+        // Go through gear lists and delete id's that match this item's id
+
+
         return user.save()
       })
       .then(user => res.send(user))

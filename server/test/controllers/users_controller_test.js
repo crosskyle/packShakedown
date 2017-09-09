@@ -23,17 +23,17 @@ describe('Users controller', () => {
     })
   })
 
-  it('Post to /api/users/:userId/gear creates a new item', (done) => {
+  it('Post to /api/users/:userId/items creates a new item', (done) => {
     const user = new User({ email: 'test@test.com', password: 'password' })
 
     user.save().then(() => {
       request(app)
-        .post(`/api/users/${user._id}/gear`)
+        .post(`/api/users/${user._id}/items`)
         .send({ title: 'item' })
         .end((err, response) => {
           User.findOne({ email: 'test@test.com' })
             .then(user => {
-              assert(user.gear.length === 1)
+              assert(user.items.length === 1)
               done()
             })
         })
@@ -63,7 +63,7 @@ describe('Users controller', () => {
         description: 'desc',
         itemIds: ['string', 'string']
       }],
-      gear: [{ title: 'soap'}, {title: 'quilt'}, {title: 'tarp'}]
+      items: [{ title: 'soap'}, {title: 'quilt'}, {title: 'tarp'}]
     })
 
     user.save().then(() => {
@@ -77,18 +77,18 @@ describe('Users controller', () => {
     })
   })
 
-  it('GET to /api/users/:userId/gear reads gear list', (done) => {
+  it('GET to /api/users/:userId/items reads items list', (done) => {
     const user = new User({
       email: 'test@test.com',
       password: 'password',
-      gear: [{
+      items: [{
         title: 'item'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .get(`/api/users/${user._id}/gear`)
+        .get(`/api/users/${user._id}/items`)
         .send()
         .end((err, response) => {
           assert(response.body[0].title === 'item')
@@ -117,18 +117,18 @@ describe('Users controller', () => {
     })
   })
 
-  it('PUT to /api/users/:userId/gear/:itemId updates an item', (done) => {
+  it('PUT to /api/users/:userId/items/:itemId updates an item', (done) => {
     const user = new User({
       email: 'test@test.com',
       password: 'password',
-      gear: [{
+      items: [{
         title: 'title'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .put(`/api/users/${user._id}/gear/${user.gear[0]._id}`)
+        .put(`/api/users/${user._id}/items/${user.items[0]._id}`)
         .send({ title: 'soap'})
         .end((err, response) => {
           assert(response.body.title === 'soap')
@@ -177,23 +177,23 @@ describe('Users controller', () => {
     })
   })
 
-  it('DELETE to /api/users/:userId/gear/:itemId removes an item', (done) => {
+  it('DELETE to /api/users/:userId/items/:itemId removes an item', (done) => {
     const user = new User({
       email: 'test@t.com',
       password: 'password',
-      gear: [{
+      items: [{
         title: 'toothbrush'
       }]
     })
 
     user.save().then(() => {
       request(app)
-        .delete(`/api/users/${user._id}/gear/${user.gear[0]._id}`)
+        .delete(`/api/users/${user._id}/items/${user.items[0]._id}`)
         .send()
         .end(() => {
           User.findOne({ email: 'test@t.com' })
             .then(user => {
-              assert(user.gear.length === 0)
+              assert(user.items.length === 0)
               done()
             })
         })
