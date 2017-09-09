@@ -10,14 +10,29 @@ class PacksShow extends Component {
     this.props.readPack(id)
   }
 
-  renderItems() {
+  renderCategories() {
     const { pack } = this.props
 
-    return _.map(pack.items, item => {
+    return _.map(pack.categories, category => {
+      return (
+        <div>
+          <h4>{category.category}</h4>
+          <ul className="list-group" key={category.category}>
+            {this.renderItems(category)}
+          </ul>
+        </div>
+
+      )
+    })
+  }
+
+  renderItems(category) {
+    return _.map(category.items, item => {
       return (
         <li className="list-group-item" key={item._id}>
           {item.title}
         </li>
+
       )
     })
   }
@@ -40,7 +55,7 @@ class PacksShow extends Component {
         <h3>{pack.title}</h3>
         <p>{pack.description}</p>
         <ul className="list-group">
-          {this.renderItems()}
+          {this.renderCategories()}
         </ul>
       </div>
     )

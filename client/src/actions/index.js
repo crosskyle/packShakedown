@@ -23,9 +23,31 @@ export function createPack(values) {
 export function readPack(packId) {
   const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}/packs/${packId}`)
     .then((resp) => {
-      console.log(resp.data.items)
 
-      return resp.data
+      let categories = new Set()
+      let payload = {
+        title: resp.data.title,
+        description: resp.data.description,
+        _id: resp.data._id,
+        categories: []
+      }
+
+      resp.data.items.forEach(item => {
+        if (!(categories.has(item.category))) {
+          categories.add(item.category)
+          payload.categories.push({ category: item.category, items: []})
+        }
+      })
+
+      resp.data.items.forEach(item => {
+        let index = payload.categories.findIndex(c => c.category === item.category)
+        payload.categories[index].items.push(item)
+      })
+
+      console.log(payload)
+      console.log(resp.data)
+
+      return payload
     })
 
   return {
