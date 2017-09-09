@@ -44,9 +44,6 @@ export function readPack(packId) {
         payload.categories[index].items.push(item)
       })
 
-      console.log(payload)
-      console.log(resp.data)
-
       return payload
     })
 
@@ -57,8 +54,41 @@ export function readPack(packId) {
 }
 
 export function readPacks() {
-  const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}`)
-    .then((resp) => resp.data.packs)
+  const response = axios.get(`${ROOT_URL}/api/users/${USER_ID}/packs`)
+    .then((resp) => {
+      const packs = resp.data
+      let payload = {}
+
+      for (let x in packs) {
+        let pack = packs[x]
+
+        let categories = new Set()
+
+        let packObj = {
+          title: pack.title,
+          description: pack.description,
+          _id: pack._id,
+          categories: []
+        }
+
+        pack.items.forEach(item => {
+          if (!(categories.has(item.category))) {
+            categories.add(item.category)
+            packObj.categories.push({ category: item.category, items: []})
+          }
+        })
+
+        pack.items.forEach(item => {
+          let index = packObj.categories.findIndex(c => c.category === item.category)
+          packObj.categories[index].items.push(item)
+        })
+
+        payload[pack._id] = packObj
+      }
+
+      console.log(payload)
+      return payload
+    })
 
   return {
     type: READ_PACKS,

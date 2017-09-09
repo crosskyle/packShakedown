@@ -8,7 +8,6 @@ export default function(state = {}, action) {
     case READ_PACKS:
       return _.mapKeys(action.payload, "_id")
     case READ_PACK:
-    console.log({...state, [action.payload._id]: action.payload })
       return {...state, [action.payload._id]: action.payload }
     default:
       return state
