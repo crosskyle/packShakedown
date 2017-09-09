@@ -26,6 +26,8 @@ module.exports = (app) => {
 
   app.get('/api/users/:userId/packs/:packId', UsersController.read_pack)
 
+  app.get('/api/users/:userId/packs', UsersController.read_packs)
+
   app.get('/api/users/:userId/items', UsersController.read_items)
 
 

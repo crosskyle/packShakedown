@@ -34,6 +34,40 @@ module.exports = {
       .catch(next)
   },
 
+  read_packs(req, res, next) {
+    User.findById({ _id: req.params.userId })
+      .then(user => {
+        const packs = user.packs
+        const allItems = user.items
+        let packsObj = {}
+
+        let map = new Map()
+        allItems.forEach(x => { map.set(x.id.toString(), x)})
+
+        packs.forEach(pack => {
+          let packItems = []
+          console.log(pack)
+
+          pack.itemIds.forEach(x => {
+            if (map.has(x))
+              packItems.push((map.get(x)))
+          })
+
+          packId = pack._id
+
+          packsObj[packId] = {
+            "title": pack.title,
+            "description": pack.description,
+            "_id": pack._id,
+            "items": packItems
+          }
+        })
+
+        res.send(packsObj)
+      })
+      .catch(next)
+  },
+
 
   read_pack(req, res, next) {
     User.findById({ _id: req.params.userId })
