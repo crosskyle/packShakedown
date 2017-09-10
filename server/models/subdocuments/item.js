@@ -8,7 +8,7 @@ const ItemSchema = new Schema({
   weight: Number,
   quantity: Number,
   worn: Boolean,
-  consumable: Boolean
+  consumable: String
 })
 
 module.exports = ItemSchema
