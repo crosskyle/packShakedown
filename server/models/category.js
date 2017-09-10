@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const CategorySchema = new Schema({
-  title: String,
+  kind: {type: String, default: 'Category'},
+  self: String,
+  id: String,
+  title: {type: String, default: ''},
   items: [{
     type: Schema.Types.ObjectId,
     ref: 'item' }]

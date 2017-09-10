@@ -14,7 +14,7 @@ module.exports = {
     // Need to give them a token
     User.findOne({ email: req.body.email })
       .then(user => {
-        res.send({ token: tokenForUser(req.user), userId: user._id })
+        res.send({ token: tokenForUser(req.user), user })
       })
       .catch(next)
   },
@@ -32,11 +32,13 @@ module.exports = {
           email: req.body.email,
           password: req.body.password
         })
+        user.id = user._id
+        user.self = `/api/users/${user._id}`
         return user.save()
       })
       .then((user) => {
         // Respond to request indicating user was created
-        res.send({ token: tokenForUser(user), userId: user._id })
+        res.send({ token: tokenForUser(user), user })
       })
       .catch(next)
   }

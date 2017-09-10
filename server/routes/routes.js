@@ -1,4 +1,5 @@
-const UsersController = require('../controllers/users_controller')
+const CreateController = require('../controllers/create_controller')
+const ReadController = require('../controllers/read_controller')
 const AuthController = require('../controllers/auth_controller')
 const passportService = require('../services/passport')
 const passport = require('passport')
@@ -16,34 +17,16 @@ module.exports = (app) => {
 
   // Create
 
-  app.post('/api/users/:userId/packs', UsersController.create_pack)
+  app.post('/api/users/:userId/packs', CreateController.create_pack)
 
-  app.post('/api/users/:userId/items', UsersController.create_item)
+  app.post('/api/users/:userId/packs/:packId/categories', CreateController.create_category)
+
+  app.post('/api/users/:userId/packs/:packId/categories/:categoryId/items', CreateController.create_item_in_category)
+
+  app.post('/api/users/:userId/items', CreateController.create_item)
 
   // Read
 
-  app.get('/api/users/:userId', UsersController.read_user)
+  app.get('/api/users/:userId', ReadController.read_user)
 
-  app.get('/api/users/:userId/packs/:packId', UsersController.read_pack)
-
-  app.get('/api/users/:userId/packs', UsersController.read_packs)
-
-  app.get('/api/users/:userId/items', UsersController.read_items)
-
-
-  // Update
-
-  app.put('/api/users/:userId/packs/:packId', UsersController.update_pack)
-
-  app.put('/api/users/:userId/packs/:packId/items', UsersController.update_pack_items)
-
-  app.put('/api/users/:userId/items/:itemId', UsersController.update_item)
-
-  // Delete
-
-  app.delete('/api/users/:userId', UsersController.delete_user)
-
-  app.delete('/api/users/:userId/packs/:packId', UsersController.delete_pack)
-
-  app.delete('/api/users/:userId/items/:itemId', UsersController.delete_item)
 }

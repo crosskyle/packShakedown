@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PackSchema = new Schema({
+  kind: {type: String, default: 'Pack'},
+  self: String,
+  id: String,
   title: String,
   description: String,
   categories: [{
