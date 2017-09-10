@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const PackSchema = require('./subdocuments/pack')
-const ItemSchema = require ('./subdocuments/item')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 
@@ -8,15 +6,20 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
     lowercase: true
   },
   password: {
     type: String,
     required: true
   },
-  items: [ItemSchema],
-  packs: [PackSchema]
+  packs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'pack'
+  }],
+  items: [{
+    type: Schema.Types.ObjectId,
+    ref: 'item'
+  }]
 })
 
 // On Save Hook, encrypt password
@@ -40,6 +43,15 @@ UserSchema.pre('save', function (next) {
   })
 })
 
+UserSchema.pre('remove', function(next) {
+  const Pack = mongoose.model('pack')
+  const Item = mongoose.model('item')
+
+  Pack.remove({ _id: { $in: this.packs } })
+    .then(() => Item.remove({ _id: { $in: this.items } }))
+    .then(() => next())
+})
+
 UserSchema.methods.comparePassword = function (candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
     if (err) { return callback(err) }
@@ -47,7 +59,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, callback) {
     callback(null, isMatch)
   })
 }
-
 
 const User = mongoose.model('user', UserSchema)
 

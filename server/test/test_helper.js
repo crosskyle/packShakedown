@@ -1,20 +1,25 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
-before(done => {
-  mongoose.connect('mongodb://localhost/packShakedown_test')
+before((done) => {
+  mongoose.connect('mongodb://localhost/pack_test');
   mongoose.connection
-    .once('open', () => done())
+    .once('open', () => { done(); })
     .on('error', (error) => {
-      console.warn('Warning', error)
-    })
-})
+      console.warn('Warning', error);
+    });
+});
 
-beforeEach(done => {
-  const { users } = mongoose.connection.collections
-
-  users.drop()
-    .then(() => done())
-    .catch(() => done())
-})
+beforeEach((done) => {
+  const { users, packs, categories, items } = mongoose.connection.collections;
+  users.drop(() => {
+    packs.drop(() => {
+      categories.drop(() => {
+        items.drop()
+          .then(() => done())
+          .catch(() => done())
+      });
+    });
+  });
+});

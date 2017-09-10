@@ -8,7 +8,7 @@ module.exports = {
     User.findById({ _id: req.params.userId })
       .then((user) => {
         user.packs.push(req.body)
-        return user.save() // must return to include another callback after promise
+        return user.save()
       })
       .then(user => res.send(user))
       .catch(next)

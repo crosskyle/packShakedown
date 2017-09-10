@@ -4,7 +4,7 @@ const app = require('../../app')
 const mongoose = require('mongoose')
 const User = mongoose.model('user')
 
-describe('Users controller', () => {
+describe.skip('Users controller', () => {
 
   it('Post to /api/users/:userId/packs creates a new pack', (done) => {
     const user = new User({ email: 'test@test.com', password: 'password', packs: [] })
