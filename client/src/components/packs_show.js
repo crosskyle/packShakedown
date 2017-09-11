@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { readPack } from '../actions'
 import _ from 'lodash'
 
@@ -36,16 +35,8 @@ class PacksShow extends Component {
     })
   }
 
-  onDeleteClick() {
-
-
-  }
-
   render () {
-    if (!this.props.pack) {
-      return <div>hi</div>
 
-    }
     const { pack } = this.props
 
     if (!pack) {
@@ -54,7 +45,6 @@ class PacksShow extends Component {
 
     return (
       <div>
-        <Link to ="/" className="btn btn-primary">Back To Index</Link>
         <h3>{pack.title}</h3>
         <p>{pack.description}</p>
         <ul className="list-group">
