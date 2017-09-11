@@ -29,4 +29,8 @@ module.exports = (app) => {
 
   app.get('/api/users/:userId', ReadController.read_user)
 
+  app.get('/api/users/:userId/packs', ReadController.read_packs)
+
+  app.get('/api/users/:userId/packs/:packId', ReadController.read_pack)
+
 }

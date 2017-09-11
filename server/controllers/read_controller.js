@@ -25,5 +25,40 @@ module.exports = {
         res.send(user)
       })
       .catch(next)
+  },
+
+
+  read_packs(req, res, next) {
+    const userId = req.params.userId
+
+    User.findById({ _id: userId })
+      .populate({
+        path: 'packs',
+        populate: {
+          path: 'categories',
+          model: 'category',
+          populate: {
+            path: 'items',
+            model: 'item'
+          }
+        }
+      })
+      .then((user) => res.send(user.packs))
+      .catch(next)
+  },
+
+  read_pack(req, res, next) {
+    const packId = req.params.packId
+
+    Pack.findById({ _id: packId })
+      .populate({
+        path: 'categories',
+        populate: {
+          path: 'items',
+          model: 'item'
+        }
+      })
+      .then((pack) => res.send(pack))
+      .catch(next)
   }
 }

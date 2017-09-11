@@ -7,6 +7,7 @@ import promise from 'redux-promise'
 
 import reducers from './reducers/index'
 import PacksNew from './components/packs_new'
+import App from './components/app'
 import PacksShow from './components/packs_show'
 import PacksIndex from './components/packs_index'
 
@@ -19,7 +20,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/packs/new" component={PacksNew}/>
           <Route path="/packs/:id" component={PacksShow}/>
-          <Route path="/" component={PacksIndex} />
+          <Route path="/" component={App} />
         </Switch>
       </div>
     </BrowserRouter>

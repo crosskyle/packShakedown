@@ -6,8 +6,8 @@ import _ from 'lodash'
 
 class PacksShow extends Component {
   componentDidMount() {
-    const { id } = this.props.match.params //provided from react-router
-    this.props.readPack(id)
+    //const { id } = this.props.match.params //provided from react-router
+    this.props.readPack('59b5b55eed3db3029f698e7b')
   }
 
   renderCategories() {
@@ -15,13 +15,12 @@ class PacksShow extends Component {
 
     return _.map(pack.categories, category => {
       return (
-        <div>
-          <h4>{category.category}</h4>
-          <ul className="list-group" key={category.category}>
+        <div key={category.id}>
+          <h4 key={category.title}>{category.title} </h4>
+          <ul className="list-group" key={category.id}>
             {this.renderItems(category)}
           </ul>
         </div>
-
       )
     })
   }
@@ -29,7 +28,7 @@ class PacksShow extends Component {
   renderItems(category) {
     return _.map(category.items, item => {
       return (
-        <li className="list-group-item" key={item._id}>
+        <li className="list-group-item" key={item.id}>
           {item.title}
         </li>
 
@@ -43,6 +42,10 @@ class PacksShow extends Component {
   }
 
   render () {
+    if (!this.props.pack) {
+      return <div>hi</div>
+
+    }
     const { pack } = this.props
 
     if (!pack) {
@@ -63,7 +66,8 @@ class PacksShow extends Component {
 }
 
 function mapStateToProps({ packs }, ownProps) {
-  return { pack: packs[ownProps.match.params.id] }
+  //return { pack: packs[ownProps.match.params.id] }
+  return { pack: packs['59b5b55eed3db3029f698e7b']}
 }
 
 export default connect(mapStateToProps, { readPack })(PacksShow)
