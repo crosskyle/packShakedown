@@ -1,6 +1,8 @@
 const CreateController = require('../controllers/create_controller')
 const ReadController = require('../controllers/read_controller')
+const UpdateController = require('../controllers/update_controller')
 const AuthController = require('../controllers/auth_controller')
+const DeleteController = require('../controllers/delete_controller')
 const passportService = require('../services/passport')
 const passport = require('passport')
 
@@ -33,4 +35,11 @@ module.exports = (app) => {
 
   app.get('/api/users/:userId/packs/:packId', ReadController.read_pack)
 
+  // Update
+
+  app.put('/api/users/:userId/packs/:packId', UpdateController.update_pack)
+
+  // Delete
+
+  app.delete('/api/users/:userId/items/:itemId', DeleteController.delete_item)
 }

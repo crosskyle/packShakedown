@@ -34,7 +34,18 @@ module.exports = {
       .then((pack) => {
         pack.categories.push(category)
         return Promise.all([pack.save(), category.save()])
-          .then(() => res.send(category))
+      })
+      .then(() => {
+        Pack.findById({ _id: packId })
+          .populate({
+            path: 'categories',
+            populate: {
+              path: 'items',
+              model: 'item'
+            }
+          })
+          .then((pack) => res.send(pack))
+          .catch(next)
       })
       .catch(next)
   },
@@ -43,6 +54,7 @@ module.exports = {
   create_item_in_category(req, res, next) {
     const userId = req.params.userId
     const categoryId = req.params.categoryId
+    const packId = req.params.packId
 
     const item = new Item(req.body)
     item.id = item._id
@@ -52,7 +64,18 @@ module.exports = {
       .then((category) => {
         category.items.push(item)
         return Promise.all([category.save(), item.save()])
-          .then(() => res.send(item))
+      })
+      .then(() => {
+        Pack.findById({ _id: packId })
+          .populate({
+            path: 'categories',
+            populate: {
+              path: 'items',
+              model: 'item'
+            }
+          })
+          .then((pack) => res.send(pack))
+          .catch(next)
       })
       .catch(next)
 
@@ -62,6 +85,8 @@ module.exports = {
         user.save()
       })
       .catch(next)
+
+
 
 
   },
