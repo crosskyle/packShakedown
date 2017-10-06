@@ -5,6 +5,37 @@ const Pack = require('../models/pack')
 
 module.exports = {
 
+  update_item(req, res, next) {
+    const itemId = req.params.itemId
+    const packId = req.params.packId
+
+    console.log('itemId')
+
+    Item.findById({ _id: itemId })
+      .then((item) => {
+        item.title = req.body.title
+        item.description = req.body.description
+        item.quantity = req.body.quantity
+        item.weight = req.body.weight
+        item.worn = req.body.worn
+        item.consumable = req.body.consumable
+        return item.save()
+      })
+      .then(() => {
+        Pack.findById({ _id: packId })
+          .populate({
+            path: 'categories',
+            populate: {
+              path: 'items',
+              model: 'item'
+            }
+          })
+          .then((pack) => res.send(pack))
+          .catch(next)
+      })
+      .catch(next)
+  },
+
   update_pack(req, res, next) {
     const packId = req.params.packId
 
@@ -56,7 +87,5 @@ module.exports = {
         })
         .catch(next))
       .catch(next)
-
-
   }
 }

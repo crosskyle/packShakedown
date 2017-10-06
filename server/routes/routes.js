@@ -39,6 +39,8 @@ module.exports = (app) => {
 
   app.put('/api/users/:userId/packs/:packId', UpdateController.update_pack)
 
+  app.patch('/api/users/:userId/packs/:packId/categories/:categoryId/items/:itemId', UpdateController.update_item)
+
   app.put('/api/users/:userId/packs/:packId/categories/:categoryId/items/:itemId', UpdateController.put_item_in_category)
 
   // Delete
