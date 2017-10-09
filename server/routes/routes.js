@@ -46,4 +46,8 @@ module.exports = (app) => {
   // Delete
 
   app.delete('/api/users/:userId/items/:itemId', DeleteController.delete_item)
+
+  app.delete('/api/users/:userId/packs/:packId/categories/:categoryId', DeleteController.delete_category)
+
+  app.delete('/api/users/:userId/packs/:packId/categories/:categoryId/items/:itemId', DeleteController.remove_item_from_category)
 }
