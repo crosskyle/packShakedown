@@ -6,7 +6,7 @@ const Pack = require('../models/pack')
 module.exports = {
 
   delete_item(req, res, next) {
-    const itemId = req.params.itemId
+    const { itemId } = req.params
 
     Item.findByIdAndRemove({_id: itemId})
       .then((item) => res.status(204).send(item))
@@ -37,8 +37,7 @@ module.exports = {
   },
 
   delete_category(req, res, next) {
-    const categoryId = req.params.categoryId
-    const packId = req.params.packId
+    const { packId, categoryId } = req.params
 
     Category.findByIdAndRemove({_id: categoryId})
       .then(() => {
@@ -57,9 +56,7 @@ module.exports = {
   },
 
   remove_item_from_category(req, res, next) {
-    const itemId = req.params.itemId
-    const categoryId = req.params.categoryId
-    const packId = req.params.packId
+    const { packId, categoryId, itemId } = req.params
 
     Category.findById({_id: categoryId})
       .then((category) => {

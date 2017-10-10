@@ -23,8 +23,7 @@ module.exports = {
 
 
   create_category(req, res, next) {
-    const userId = req.params.userId
-    const packId = req.params.packId
+    const { userId, packId } = req.params
 
     const category = new Category(req.body)
     category.id = category._id
@@ -52,9 +51,7 @@ module.exports = {
 
 
   create_item_in_category(req, res, next) {
-    const userId = req.params.userId
-    const categoryId = req.params.categoryId
-    const packId = req.params.packId
+    const { userId, packId, categoryId } = req.params
 
     const item = new Item(req.body)
     item.id = item._id

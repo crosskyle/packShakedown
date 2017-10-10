@@ -6,10 +6,7 @@ const Pack = require('../models/pack')
 module.exports = {
 
   update_item(req, res, next) {
-    const itemId = req.params.itemId
-    const packId = req.params.packId
-
-    console.log('itemId')
+    const { packId, itemId } = req.params
 
     Item.findById({ _id: itemId })
       .then((item) => {
@@ -61,9 +58,7 @@ module.exports = {
   },
 
   put_item_in_category(req, res, next) {
-    const packId = req.params.packId
-    const categoryId = req.params.categoryId
-    const itemId = req.params.itemId
+    const { packId, categoryId, itemId } = req.params
     let thisCategory
 
     Category.findById({ _id: categoryId })
