@@ -13,6 +13,29 @@ module.exports = {
       .catch(next)
   },
 
+  delete_pack(req, res, next) {
+    const { packId, userId } = req.params
+
+    Pack.findByIdAndRemove({_id: packId})
+      .then(() => {
+        User.findById({ _id: userId })
+          .populate({
+            path: 'packs',
+            populate: {
+              path: 'categories',
+              model: 'category',
+              populate: {
+                path: 'items',
+                model: 'item'
+              }
+            }
+          })
+          .then((user) => res.send(user.packs))
+          .catch(next)
+      })
+      .catch(next)
+  },
+
   delete_category(req, res, next) {
     const categoryId = req.params.categoryId
     const packId = req.params.packId
